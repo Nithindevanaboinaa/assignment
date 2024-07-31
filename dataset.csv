@@ -1,0 +1,47 @@
+import pandas as pd
+
+# Load your CSV and JSON data
+csv_data = pd.read_csv('dataset.csv')
+json_data = pd.read_json('dataset.json')
+
+# Display initial data information and check for missing values
+print("CSV Data Info:")
+csv_data.info()
+print("JSON Data Info:")
+json_data.info()
+
+print("\nMissing values in CSV data:")
+print(csv_data.isnull().sum())
+print("\nMissing values in JSON data:")
+print(json_data.isnull().sum())
+
+# Separate numeric and non-numeric columns
+csv_numeric_cols = csv_data.select_dtypes(include=['number']).columns
+json_numeric_cols = json_data.select_dtypes(include=['number']).columns
+
+# Fill missing values with the mean for numeric columns
+csv_data[csv_numeric_cols] = csv_data[csv_numeric_cols].fillna(csv_data[csv_numeric_cols].mean())
+json_data[json_numeric_cols] = json_data[json_numeric_cols].fillna(json_data[json_numeric_cols].mean())
+
+# Display data information after filling missing values
+print("\nCSV Data Info after filling missing values:")
+csv_data.info()
+print("\nJSON Data Info after filling missing values:")
+json_data.info()
+
+# Optionally, you can handle non-numeric columns as needed
+# For example, fill missing values with a placeholder or mode value
+csv_non_numeric_cols = csv_data.select_dtypes(exclude=['number']).columns
+json_non_numeric_cols = json_data.select_dtypes(exclude=['number']).columns
+
+csv_data[csv_non_numeric_cols] = csv_data[csv_non_numeric_cols].fillna('missing')
+json_data[json_non_numeric_cols] = json_data[json_non_numeric_cols].fillna('missing')
+
+# Save the cleaned data back to files if needed
+csv_data.to_csv('dataset.csv', index=False)
+json_data.to_json('dataset.json', orient='records')
+
+print("\nMissing values in CSV data after filling non-numeric columns:")
+print(csv_data.isnull().sum())
+print("\nMissing values in JSON data after filling non-numeric columns:")
+print(json_data.isnull().sum())

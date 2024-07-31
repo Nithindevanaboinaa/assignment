@@ -1,0 +1,4 @@
+Name, Age, Salary
+Alice, 30, 50000
+Bob, 24, 45000
+Charlie, 29, 60000
